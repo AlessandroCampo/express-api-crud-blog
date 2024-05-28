@@ -107,7 +107,7 @@ const destroy = (req, res) => {
     const newData = existingPosts.filter(p => p.slug !== slug);
     const stringifiedData = JSON.stringify(newData);
     utils.writeInFile(dbFileName, 'json', stringifiedData);
-    return res.status(200).json({ success: true });
+    return res.status(200).json({ success: true, message: 'post succesfully deleted' });
 }
 
 module.exports = {
