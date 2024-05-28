@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
     const dbPath = path.resolve(__dirname, '../postsDb.json');
     const currentPosts = JSON.parse(fs.readFileSync(dbPath));
     const postExists = currentPosts.some(p => slug === p.slug);
-    console.log(postExists)
+
 
     if (postExists) {
         next();

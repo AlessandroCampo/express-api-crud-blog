@@ -6,7 +6,7 @@ const { createSlug } = require('../utils');
 
 module.exports = multer.diskStorage({
     destination: (req, file, cb) => {
-        console.log(file)
+
         const uploadPath = path.join(__dirname, '../public/assets');
         if (!fs.existsSync(uploadPath)) {
             fs.mkdirSync(uploadPath, { recursive: true });

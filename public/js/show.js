@@ -6,7 +6,6 @@ const formatDate = (dateString) => {
 }
 
 const deletePost = async (slug) => {
-    console.log(slug)
     try {
         const response = await axios.delete(`http://localhost:3000/posts/${slug}`);
         if (response.status === 200) {
@@ -26,7 +25,6 @@ const printCard = async () => {
     try {
         const response = await axios.get(`http://localhost:3000/posts/${slug}`);
         post = response.data;
-        console.log(post);
         if (post) {
             const cardTemplate = `
                 <div class="max-w-4xl mx-auto bg-gray-800 shadow-lg rounded-lg overflow-hidden text-white">

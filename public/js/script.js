@@ -42,7 +42,6 @@ const printFeed = async () => {
         console.error(err);
     }
     if (response) {
-        console.log(response);
         const postsHTML = response.data.map(post => `
             <div class="max-w-sm rounded overflow-hidden shadow-lg bg-gray-800 text-white mb-8">
                 <a href="http://localhost:3000/posts/${post.slug}" class="block">

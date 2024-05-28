@@ -1,3 +1,5 @@
+const utils = require('../utils.js')
+
 module.exports = (req, res, next) => {
     const { title, content, author } = req.body;
     const image = req.file;
@@ -23,6 +25,9 @@ module.exports = (req, res, next) => {
     if (errors.length === 0) {
         next();
     } else {
+        if (image) {
+            utils.deletePublicFile(image.filename);
+        }
         const error = new Error('Validation failed');
         error.status = 406;
         error.list = errors;

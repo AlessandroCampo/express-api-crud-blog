@@ -9,7 +9,6 @@ const readFile = (fileName, extension) => {
     const filePath = extension == 'html' ? path.join(__dirname, 'views', namePlusExtension) : path.join(__dirname, namePlusExtension);
     const fileContent = fs.readFileSync(filePath, 'utf8');
     if (extension == 'json') return JSON.parse(fileContent);
-    console.log(fileContent)
     return fileContent
 };
 
@@ -21,6 +20,11 @@ const writeInFile = function (fileName, extension, data) {
     const filePath = path.join(__dirname, fileName + '.' + extension);
     fs.writeFileSync(filePath, data);
 };
+
+const deletePublicFile = function (fileName) {
+    const filePath = path.join(__dirname, '/public', fileName);
+    fs.unlinkSync(filePath);
+}
 
 
 
@@ -50,4 +54,5 @@ module.exports = {
     getPath,
     writeInFile,
     createSlug,
+    deletePublicFile
 }
