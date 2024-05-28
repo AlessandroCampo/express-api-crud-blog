@@ -3,7 +3,8 @@ const multer = require('multer');
 const router = express.Router();
 const postController = require('../controllers/posts.js')
 const utils = require('../utils.js');
-const upload = multer({ storage: utils.storage });
+const storage = require('../middlewares/storage.js');
+const upload = multer({ storage });
 
 
 router.get('/', postController.index)

@@ -1,6 +1,5 @@
 const path = require('path');
 const fs = require('fs');
-const multer = require('multer');
 let posts = require('./postsDb.json')
 
 
@@ -22,18 +21,7 @@ const writeInFile = function (fileName, extension, data) {
     fs.writeFileSync(filePath, data);
 };
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        const uploadPath = path.join(__dirname, 'public/assets');
-        if (!fs.existsSync(uploadPath)) {
-            fs.mkdirSync(uploadPath, { recursive: true });
-        }
-        cb(null, uploadPath);
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname));
-    }
-});
+
 
 const createSlug = (title) => {
     //check //
@@ -60,6 +48,5 @@ module.exports = {
     readFile,
     getPath,
     writeInFile,
-    storage,
     createSlug,
 }
