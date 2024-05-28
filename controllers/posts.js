@@ -21,17 +21,17 @@ const create = (req, res) => {
     const data = req.body;
     const existingPosts = utils.readFile(dbFileName, 'json')
 
-    const arrayOfTags = data.content.split(" ").reduce((acc, word) => {
+    const arrayOfTags = data.content ? data.content.split(" ").reduce((acc, word) => {
         if (word.startsWith('#')) {
             return [...acc, word.slice(1)];
         }
         return acc;
-    }, []);
+    }, []) : [];
     const newObject = {
         title: data.title || 'No title for this post',
         author: data.author || 'Author of this post is unkown',
         content: data.content || '',
-        image: req.file ? `/assets/${req.file.filename}` : 'https://picsum.photos/400/1200?random=4',
+        image: req.file ? `/assets/${req.file.filename}` : '/assets/default_placeholder.png',
         image_url: req.file ? `http://${req.headers.hostname}${req.file.filename}` : 'no link',
         creation_date: new Date(),
         tags: arrayOfTags || [],
@@ -41,6 +41,16 @@ const create = (req, res) => {
     const newData = [...existingPosts, newObject];
     const stringifiedData = JSON.stringify(newData);
     utils.writeInFile(dbFileName, 'json', stringifiedData);
+
+    res.format({
+        "html": () => {
+            const htmlContent = utils.readFile('posts', 'html');
+            return res.type("html").send(htmlContent);
+        },
+        "json": () => {
+            return res.type("json").send(newObject);
+        }
+    })
 
 
     return res.redirect("/posts");
