@@ -1,6 +1,7 @@
 const utils = require('../utils.js');
 const dbFileName = 'postsDb';
 const path = require('path');
+const fs = require('fs');
 let posts = require('../postsDb.json');
 
 const index = (req, res) => {
@@ -44,28 +45,27 @@ const create = (req, res) => {
 
     res.format({
         "html": () => {
-            const htmlContent = utils.readFile('posts', 'html');
-            return res.type("html").send(htmlContent);
+            res.redirect("/posts");
         },
         "json": () => {
-            return res.type("json").send(newObject);
+            res.type("json").send(newObject);
         }
     })
 
-
-    return res.redirect("/posts");
 
 }
 
 const show = (req, res) => {
     const slug = req.params.slug;
+    const dbPath = path.resolve(__dirname, '../postsDb.json');
+    const currentPosts = JSON.parse(fs.readFileSync(dbPath));
     res.format({
         "html": () => {
             const htmlPath = path.join(__dirname, '..', 'views', 'show.html');
             return res.type("html").sendFile(htmlPath);
         },
         "json": () => {
-            const selectedPost = posts.find(p => slug === p.slug);
+            const selectedPost = currentPosts.find(p => slug === p.slug);
             if (!selectedPost) {
                 return res.status(404).json({
                     success: false,
@@ -99,10 +99,22 @@ const comment = (req, res) => {
     return res.redirect("/posts");
 }
 
+const destroy = (req, res) => {
+    const data = req.body;
+    const slug = req.params.slug;
+    const existingPosts = utils.readFile(dbFileName, 'json')
+    const selectedPost = existingPosts.find(p => slug === p.slug);
+    const newData = existingPosts.filter(p => p.slug !== slug);
+    const stringifiedData = JSON.stringify(newData);
+    utils.writeInFile(dbFileName, 'json', stringifiedData);
+    return res.status(200).json({ success: true });
+}
+
 module.exports = {
     index,
     create,
     show,
     download,
-    comment
+    comment,
+    destroy
 }

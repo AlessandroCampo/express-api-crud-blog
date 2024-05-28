@@ -25,7 +25,7 @@ const writeInFile = function (fileName, extension, data) {
 
 const createSlug = (title) => {
     //check //
-    currentPosts = JSON.parse(fs.readFileSync(__dirname + '/postsDb.json'))
+    let currentPosts = JSON.parse(fs.readFileSync(__dirname + '/postsDb.json'))
     const postSlugs = currentPosts.map(p => p.slug);
     let baseSlug = title ? title.replaceAll(' ', '-').toLowerCase() : 'no-title-post';
     let uniqueSlug = baseSlug;
