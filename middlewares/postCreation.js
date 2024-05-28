@@ -23,7 +23,9 @@ module.exports = (req, res, next) => {
     if (errors.length === 0) {
         next();
     } else {
-        const errorText = errors.join('\n');
-        res.status(406).send(errorText);
+        const error = new Error('Validation failed');
+        error.status = 406;
+        error.list = errors;
+        throw error;
     }
 };

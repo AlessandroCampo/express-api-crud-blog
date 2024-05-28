@@ -6,11 +6,12 @@ const utils = require('../utils.js');
 const storage = require('../middlewares/storage.js');
 const checkPostExists = require('../middlewares/checkPostExists.js');
 const postCreation = require('../middlewares/postCreation.js');
+const postErrorHandler = require('../middlewares/postErrorHandler.js');
 const upload = multer({ storage });
 
 
 router.get('/', postController.index)
-    .post('/create', upload.single('image'), postCreation, postController.create)
+    .post('/create', upload.single('image'), postCreation, postController.create, postErrorHandler)
     .get('/:slug', checkPostExists, postController.show)
     .delete('/:slug', checkPostExists, postController.destroy)
     .get('/:slug/download', checkPostExists, postController.download)

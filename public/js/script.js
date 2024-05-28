@@ -1,9 +1,37 @@
 const postContainer = document.getElementById('posts');
+const form = document.getElementById('creation-form');
+const formErrorsContainer = document.getElementById('form-errors');
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const formData = new FormData(form);
+        try {
+            response = await axios.post('http://localhost:3000/posts', formData);
+        } catch (err) {
+            console.error(err);
+            if (err.response && err.response.data && err.response.data.list) {
+                err.response.data.list.forEach(e => {
+                    const li = document.createElement('li');
+                    li.innerText = e;
+                    formErrorsContainer.appendChild(li);
+                });
+            }
+        }
+    });
+});
+
+
 const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', options);
 }
+
 
 
 const printFeed = async () => {

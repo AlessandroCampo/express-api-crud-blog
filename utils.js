@@ -9,6 +9,7 @@ const readFile = (fileName, extension) => {
     const filePath = extension == 'html' ? path.join(__dirname, 'views', namePlusExtension) : path.join(__dirname, namePlusExtension);
     const fileContent = fs.readFileSync(filePath, 'utf8');
     if (extension == 'json') return JSON.parse(fileContent);
+    console.log(fileContent)
     return fileContent
 };
 

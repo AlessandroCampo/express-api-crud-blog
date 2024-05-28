@@ -7,16 +7,15 @@ let posts = require('../postsDb.json');
 const index = (req, res) => {
     res.format({
         "html": () => {
-            const htmlContent = utils.readFile('posts', 'html');
-            // const htmlPath = utils.getPath('index.html');
+            let htmlContent = utils.readFile('posts', 'html');
+            htmlContent = htmlContent.replaceAll('{{formErrors}}', '');
             return res.type("html").send(htmlContent);
-            // return res.type("json").send(utils.readFile(dbFileName, 'json'));
         },
         "json": () => {
             return res.type("json").send(utils.readFile(dbFileName, 'json'));
         }
-    })
-}
+    });
+};
 
 const create = (req, res) => {
     const data = req.body;
